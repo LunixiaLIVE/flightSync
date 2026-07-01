@@ -1,0 +1,26 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+
+[[mixins]]
+    config = "flightsync.common.mixins.json"
+
+[[mods]]
+    modId = "flightsync"
+    version = "${version}"
+    displayName = "flightSync"
+    description = "Prevents players from getting stuck in elytra flight mode after portal teleportation."
+
+[[dependencies.flightsync]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "[26.1,26.2)"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.flightsync]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "[26.1,26.2)"
+    ordering = "NONE"
+    side = "CLIENT"

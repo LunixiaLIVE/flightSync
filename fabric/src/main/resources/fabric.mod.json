@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "flightsync",
+  "version": "${version}",
+  "name": "flightSync",
+  "description": "Prevents players from getting stuck in elytra flight mode after portal teleportation.",
+  "authors": ["LunixiaLIVE"],
+  "contact": {
+    "sources": "https://github.com/LunixiaLIVE/flightSync_multi"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.lunix.flightsync.fabric.FlightSyncFabric"
+    ]
+  },
+  "mixins": [
+    "flightsync.common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "26.1.x"
+  }
+}
