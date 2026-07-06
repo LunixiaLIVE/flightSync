@@ -14,11 +14,66 @@
 
 ---
 
+## 🪶 What it does
+
+You take off with an elytra, glide through a nether portal (or step into the End), and on the other
+side you're **still stuck in the flying pose** — arms out, gliding — even though you never launched
+again. Sometimes you can't walk normally, sometimes you rocket into a wall, sometimes it just looks
+broken until you jump or take fall damage to snap out of it.
+
+**flightSync fixes exactly that.** It's a tiny, do-one-thing client mod: the instant you finish a
+dimension change, it checks whether the game left you in elytra-glide state and, if so, quietly turns
+it off. You land on the other side of the portal standing normally — no phantom flight, no manual
+jump to reset it. Install it and forget it's there.
+
 ## ✨ Features
 
-- Cancels lingering elytra flight after portal teleport
-- Client-side, single mixin
-- Zero dependencies — needs only the loader
+- **Kills phantom elytra flight after a portal.** Cross a nether/End portal (or any dimension
+  teleport) while gliding, and you arrive on your feet instead of stuck in flight mode.
+- **Completely automatic.** No keybind to press, no command to run, no state to manage — it reacts to
+  the teleport itself.
+- **Client-side only.** It runs entirely on your client, so it works on **any server** — vanilla,
+  modded, or a realm — with nothing installed server-side. Other players don't need it.
+- **Featherweight.** A single tiny mixin and two empty entrypoints. No new items, blocks, screens,
+  or background ticking.
+- **Zero dependencies.** Needs only the mod loader itself — no Fabric API, no library mods.
+
+## 🔧 How it works
+
+When you travel between dimensions, the server sends your client a **respawn packet** to rebuild you
+in the new world. The client applies it in `ClientPacketListener.handleRespawn`. The long-standing
+annoyance is that your **fall-flying (elytra glide) flag can survive that rebuild** — the new world
+loads around a player the client still thinks is mid-glide, leaving you visually and mechanically
+stuck in flight until something forces a reset.
+
+flightSync attaches a **single mixin** to the tail of `handleRespawn`. After the vanilla code has
+finished placing you in the new dimension, it does one check:
+
+```java
+if (mc.player != null && mc.player.isFallFlying()) {
+    mc.player.stopFallFlying();
+}
+```
+
+If — and only if — you're still flagged as fall-flying right after the teleport, it clears that
+state. That's the entire mod. It doesn't touch normal elytra use (you can launch and glide freely on
+either side of the portal), it doesn't cancel flight in mid-air during ordinary play, and it adds no
+per-tick logic — it fires once, at the exact moment the bug would otherwise strike.
+
+## 🎛️ Commands & configuration
+
+**None — and that's the point.** There are no commands, no config file, no options screen, and
+nothing to tune. Drop the jar in your `mods/` folder and it just works. Both the Fabric and NeoForge
+entrypoints are intentionally empty; all the behavior lives in that one mixin.
+
+## 💡 Use cases
+
+- **Elytra highways & portal hubs.** If you routinely glide straight through nether portals to cross
+  your world quickly, this removes the little post-portal hitch every single time.
+- **Servers you can't mod.** Because it's client-side, it fixes the annoyance on vanilla and
+  third-party servers where you can't add server mods.
+- **Modpack polish.** A no-config, no-dependency quality-of-life fix that won't conflict with anything
+  or add weight to a pack — safe to bundle and forget.
 
 ## 📦 Versions &amp; downloads
 
