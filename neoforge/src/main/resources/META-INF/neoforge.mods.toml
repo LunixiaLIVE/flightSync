@@ -10,6 +10,7 @@ license = "MIT"
     version = "${version}"
     displayName = "flightSync"
     description = "Prevents players from getting stuck in elytra flight mode after portal teleportation."
+    displayURL = "https://github.com/LunixiaLIVE/Lunixia-Minecraft-QOL-Mods"
 
 [[dependencies.flightsync]]
     modId = "neoforge"
